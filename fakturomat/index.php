@@ -25,7 +25,7 @@ foreach ($all as $value) {
 
 //  print_r($wszystkie_id);
 
-///////////////////////// ALGORYTM LOSOWANIA BEZ POWTORZEN //////////////////////
+///////////////////////// ALGORYTM LOSOWANIA BEZ POWTORZEN ////////////////////Mirossław Zelent//
 
 $ile_pytan = $how_many; //z ilu pytan losujemy?
 $ile_wylosowac = 5; //ile pytan wylosowac?
@@ -49,16 +49,6 @@ for ($i = 1; $i <= $ile_wylosowac; $i++) {
     } while ($losowanie_ok != true);
 }
 
-///////////////////////// ZOBACZ REZULTATY LOSOWANIA //////////////////////
-
-// echo "Wylosowane numery: ";
-// for ($i=1; $i<=$ile_wylosowac; $i++)
-// {
-// 	echo $wylosowane[$i]." ";
-// };
-
-
-
 
 // UTWÓRZ TABLICĘ Z WYLOSOWANYMI ID
 $picked_ids = [];
@@ -67,15 +57,15 @@ foreach ($wylosowane as $value) {
     array_push($picked_ids, $wszystkie_id[$value]);
 }
 
-// WYPISZ NA EKRANIE
-foreach ($picked_ids as $key => $value) {
-    echo ($value . '<br/>');
-}
-echo '<br/>';
+// // WYPISZ NA EKRANIE
+// foreach ($picked_ids as $key => $value) {
+//     echo ($value . '<br/>');
+// }
+// echo '<br/>';
 
-print_r('all: ' . $all[5][0]);
-echo '<br/>';
-print_r($picked_ids);
+// print_r('all: ' . $all[5][0]);
+// echo '<br/>';
+// print_r($picked_ids);
 
 
 
@@ -97,7 +87,7 @@ print_r($picked_ids);
     <!-- Bootstrap CSS -->
 
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/main.style.css" />
+    <link rel="stylesheet" href="css/main.style.min.css" />
 
 </head>
 
@@ -136,7 +126,7 @@ print_r($picked_ids);
         <div class="container-fluid">
             <div class="row params text-center bg-light p-5 m-1">
 
-                <div id="wnp-number-wrapper" class="col-md-4 col-sm-12 input-group">
+                <div id="wnp-number-wrapper" class="col-md-6 col-sm-12 input-group">
                     <label for="wnp-number">Wpisz pełny numer WNP </label>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
@@ -146,7 +136,7 @@ print_r($picked_ids);
                     </div>
                 </div>
 
-                <div id="wnp-precent-wrapper" class="col-md-4 col-sm-12 input-group">
+                <div id="wnp-precent-wrapper" class="col-md-2 col-sm-12 input-group">
                     <label for="wnp-precent">Wpisz procent</label>
                     <div class="input-group mb-3">
                         <input id="wnp-precent" class="form-control" type="number" min="0" max="100" step="1">
@@ -156,7 +146,7 @@ print_r($picked_ids);
                     </div>
                 </div>
 
-                <div id="wnp-max-wrapper" class="col-md-4 col-sm-12 input-group">
+                <div id="wnp-max-wrapper" class="col-md-2 col-sm-12 input-group">
                     <label for="wnp-max">Wpisz liczbę maksymalną</label>
                     <div class="input-group mb-3">
                         <input id="wnp-max" class="form-control" type="number" min="0" max="100" step="1">
@@ -165,15 +155,15 @@ print_r($picked_ids);
                         </div>
                     </div>
                 </div>
-
+                <div id="execut-btn" class="text-center col-md-2 col-sm-12">
+                    <button class="btn btn-primary text-center mt-3 p-3 align-middle">ROZPOCZNIJ LOSOWANIE</button>
+                </div>
 
             </div>
         </div>
 
 
-        <div id="execut-btn" class="text-center p-4 m-5">
-            <button class="btn btn-primary p-4 m-3 text-center">ROZPOCZNIJ LOSOWANIE</button>
-        </div>
+
 
 
         <!-- tabela ALL -->
@@ -181,6 +171,7 @@ print_r($picked_ids);
 
 
         <div class="picked m-5 p-2">
+            <h4>Wylosowane dokumenty: </h4>
             <table class="table">
                 <thead class="thead-light">
                     <tr>
@@ -218,6 +209,7 @@ print_r($picked_ids);
 
 
         <div class="all m-5 p-2">
+            <h4>Wszystkie dokumenty: </h4>
             <table class="table">
                 <thead class="thead-dark">
                     <tr>
@@ -240,8 +232,8 @@ print_r($picked_ids);
                         echo '
                                     <tr>
                                     <th scope ="row " >' . $i . ' </th>
-                                     <td>' . $row['nip'] .  ' </td>
                                      <td>' . $row['nr_fv'] .  ' </td>
+                                     <td>' . $row['nip'] .  ' </td>
                                      <td>' . $row['data_zawarcia'] .  ' </td>
                                      <td>' . $row['wartosc_brutto'] .  ' </td>
                                      </tr>';

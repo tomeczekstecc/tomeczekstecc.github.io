@@ -1,15 +1,15 @@
 @import 'config';
 
-body{
-    background-color: #444;
+body {
+    // background-color: #444 ;
     color: $primary-color;
     width: 100vw;
     height: 100vh;
 
 }
 
-.nav-wrap h1{
-display: block;
+.nav-wrap h1 {
+    display: block;
 }
 
 #nav-links a {
@@ -22,7 +22,7 @@ display: block;
     }
 }
 
-label{
+label,
+h4 {
     color: $secondary-color;
 }
-
