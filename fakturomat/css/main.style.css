@@ -1,0 +1,29 @@
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.bg-dark {
+  background: #1f1d1d;
+}
+
+body {
+  background-color: #444;
+  color: #fff;
+}
+
+.nav-wrap h1 {
+  display: block;
+}
+
+#nav-links a {
+  padding-top: 2vh;
+  display: inline-block;
+  margin-right: 1vw;
+}
+
+#nav-links a:hover {
+  text-decoration: none;
+}

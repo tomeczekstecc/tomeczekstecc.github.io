@@ -1,0 +1,28 @@
+@import 'config';
+
+body{
+    background-color: #444;
+    color: $primary-color;
+    width: 100vw;
+    height: 100vh;
+
+}
+
+.nav-wrap h1{
+display: block;
+}
+
+#nav-links a {
+    padding-top: 2vh;
+    display: inline-block;
+    margin-right: 1vw;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+label{
+    color: $secondary-color;
+}
+
