@@ -68,10 +68,6 @@ foreach ($wylosowane as $value) {
 // print_r($picked_ids);
 
 
-
-
-
-
 ?>
 
 
@@ -130,7 +126,7 @@ foreach ($wylosowane as $value) {
                     <label for="wnp-number">Wpisz pełny numer WNP </label>
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">RPSL.WNP.</span>
+                            <span class="input-group-text">RPSL.WNP-</span>
                         </div>
                         <input id="wnp-number" type="text" class="form-control">
                     </div>
@@ -185,8 +181,9 @@ foreach ($wylosowane as $value) {
                 <tbody>
 
                     <?php
+                    $j = 0;
                     foreach ($picked_ids as $val) {
-                        $j = 0;
+
                         $j++;
                         for ($i = 0; $i < sizeof($all); $i++) {
                             if ($val == $all[$i][0]) {
@@ -226,12 +223,13 @@ foreach ($wylosowane as $value) {
 
 
                     <?php
+                    $v = 0;
                     while ($row = $result2->fetch_assoc()) {
-                        $i = 0;
-                        $i++;
+
+                        $v++;
                         echo '
                                     <tr>
-                                    <th scope ="row " >' . $i . ' </th>
+                                    <th scope ="row " >' . $v . ' </th>
                                      <td>' . $row['nr_fv'] .  ' </td>
                                      <td>' . $row['nip'] .  ' </td>
                                      <td>' . $row['data_zawarcia'] .  ' </td>
