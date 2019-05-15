@@ -5,8 +5,10 @@ body {
     color: $primary-color;
     width: 100vw;
     height: 100vh;
+    overflow-x: hidden;
 
 }
+
 
 .nav-wrap h1 {
     display: block;
@@ -28,17 +30,27 @@ h4 {
     color: $secondary-color;
 }
 
-.error{
+.error {
     display: flex;
-
     color: rgb(116, 2, 2);
-    background:rgb(245, 67, 67) ;
+    background: rgb(245, 67, 67);
     margin: 1rem;
     padding: 1rem;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
     border-radius: 5px;
     justify-content: center;
     transition: ease-out;
 
+}
+
+.suma_all {
+    color: black;
+    font-size: 1rem;
+    font-weight: 700;
+}
+
+#summary {
+    font-size: .9rem
 }
