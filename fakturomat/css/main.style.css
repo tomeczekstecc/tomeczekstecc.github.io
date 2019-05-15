@@ -35,7 +35,19 @@ h4 {
 }
 
 .error {
-  display: block;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   color: #740202;
   background: #f54343;
+  margin: 1rem;
+  padding: 1rem;
+  text-align: center;
+  font-size: 1.5rem;
+  border-radius: 5px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-transition: ease-out;
+  transition: ease-out;
 }

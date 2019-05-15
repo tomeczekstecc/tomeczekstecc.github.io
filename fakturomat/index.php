@@ -2,9 +2,12 @@
 require_once('php/db_config_LSI.php');
 
 $not_all_params_e='';
+$no_such_wnp_e='';
+$max_more_than_all_e='';
 $class_for_error = 'non-error';
+
 if(((!isset($_POST['wnp-number'])) || (!isset($_POST['wnp-precent'])) || (!isset($_POST['wnp-max'])) || ($_POST['wnp-max']=='')|| ($_POST['wnp-number']=='')|| ($_POST['wnp-precent']=='')) ==true){
-$not_all_params_e='Nie wybrano wszystkich parametrów.';
+$not_all_params_e='Nie wybrano wszystkich parametrów. Wypełnij pełny numer wniosku, procent oraz liczbę do wylosowania.';
 $class_for_error = 'error';
 
 
@@ -13,65 +16,84 @@ $class_for_error = 'error';
     $wnp_procent = $_POST['wnp-precent'];
     $wnp_max = $_POST['wnp-max'];
 
-    $querry_select_wnp =
-    "SELECT wnp_documents.id, wnp_documents.nip, wnp_documents.nr_fv, wnp_documents.data_zawarcia, wnp_documents.wartosc_brutto
+    $querry_select_check_for_wnp=
+    "SELECT wnp.id
     FROM wnp
-    LEFT JOIN wnp_documents ON wnp_documents.wnp_id=wnp.id
-    WHERE wnp.numer_wniosku= CONCAT('WNP-RPSL.','$wnp_numer')
-    ORDER BY 1  ASC";
+    WHERE wnp.numer_wniosku = CONCAT('WNP-RPSL.','$wnp_numer')";
 
-    $result = mysqli_query($conn_lsi, $querry_select_wnp);
-    $result2 = mysqli_query($conn_lsi, $querry_select_wnp);
-    $all = $result->fetch_all();
-    $how_many = sizeof($all);
-    $wszystkie_id = [];
+    $result3 = mysqli_query($conn_lsi, $querry_select_check_for_wnp);
+    $row_num = mysqli_num_rows($result3);
 
-    foreach ($all as $value) {
-        array_push($wszystkie_id, $value[0]);
-    };
+    if($row_num<>1)
+    {$no_such_wnp_e='Nie znaleziono wniosku o takim numerze.';
+    $class_for_error = 'error';
 
+    }else{
+        $querry_select_wnp =
+        "SELECT wnp_documents.id, wnp_documents.nip, wnp_documents.nr_fv, wnp_documents.data_zawarcia, wnp_documents.wartosc_brutto
+        FROM wnp
+        LEFT JOIN wnp_documents ON wnp_documents.wnp_id=wnp.id
+        WHERE wnp.numer_wniosku= CONCAT('WNP-RPSL.','$wnp_numer')
+        ORDER BY 1 ASC";
 
-    ///////////////////////// ALGORYTM LOSOWANIA BEZ POWTORZEN ////////////////////Mirossław Zelent//
-    $ile_pytan = $how_many; //z ilu pytan losujemy?
-    $ile_wylosowac = 5; //ile pytan wylosowac?
-    $ile_juz_wylosowano = 0; //zmienna pomocnicza
-    for ($i = 1; $i <= $ile_wylosowac; $i++) {
-        do {
-            $liczba = rand(1, $ile_pytan); //losowanie w PHP
-            $losowanie_ok = true;
+        $result = mysqli_query($conn_lsi, $querry_select_wnp);
+        $result2 = mysqli_query($conn_lsi, $querry_select_wnp);
+        $all = $result->fetch_all();
+        $how_many = sizeof($all);
+        $wszystkie_id = [];
 
-            for ($j = 1; $j <= $ile_juz_wylosowano; $j++) {
-                //czy liczba nie zostala juz wczesniej wylosowana?
-                if ($liczba == $wylosowane[$j]) $losowanie_ok = false;
-            }
+            if($wnp_max > $how_many){
+                $max_more_than_all_e='Liczba dokumentów do wylosowania jest większa, niż liczba dokumenów dołączona do wniosku. Dla tego wniosku możesz wylosować nie więcej, niż '.$how_many.'.';
+                $class_for_error = 'error';
 
-            if ($losowanie_ok == true) {
-                //mamy unikatowa liczbe, zapiszmy ja do tablicy
-                $ile_juz_wylosowano++;
-                $wylosowane[$ile_juz_wylosowano] = $liczba;
-            }
-        } while ($losowanie_ok != true);
-    }
+            }else{
 
 
-    // UTWÓRZ TABLICĘ Z WYLOSOWANYMI ID
-    $picked_ids = [];
+        foreach ($all as $value) {
+            array_push($wszystkie_id, $value[0]);
+        };
 
-    foreach ($wylosowane as $value) {
-        array_push($picked_ids, $wszystkie_id[$value]);
-    }
+        ///////////////////////// ALGORYTM LOSOWANIA BEZ POWTORZEN ////////////////////Mirossław Zelent//
+        $ile_pytan = $how_many; //z ilu pytan losujemy?
+        $ile_wylosowac =  $wnp_max; //ile pytan wylosowac?
+        $ile_juz_wylosowano = 0; //zmienna pomocnicza
+        for ($i = 1; $i <= $ile_wylosowac; $i++) {
+            do {
+                $liczba = rand(1, $ile_pytan); //losowanie w PHP
+                $losowanie_ok = true;
 
-    // // WYPISZ NA EKRANIE
-    // foreach ($picked_ids as $key => $value) {
-    //     echo ($value . '<br/>');
-    // }
-    // echo '<br/>';
+                for ($j = 1; $j <= $ile_juz_wylosowano; $j++) {
+                    //czy liczba nie zostala juz wczesniej wylosowana?
+                    if ($liczba == $wylosowane[$j]) $losowanie_ok = false;
+                }
 
-    // print_r('all: ' . $all[5][0]);
-    // echo '<br/>';
-    // print_r($picked_ids);
-    }
+                if ($losowanie_ok == true) {
+                    //mamy unikatowa liczbe, zapiszmy ja do tablicy
+                    $ile_juz_wylosowano++;
+                    $wylosowane[$ile_juz_wylosowano] = $liczba;
+                }
+            } while ($losowanie_ok != true);
+        }
 
+
+        // UTWÓRZ TABLICĘ Z WYLOSOWANYMI ID
+        $picked_ids = [];
+
+        foreach ($wylosowane as $value) {
+            array_push($picked_ids, $wszystkie_id[$value]);
+        }
+
+        // // WYPISZ NA EKRANIE
+        // foreach ($picked_ids as $key => $value) {
+        //     echo ($value . '<br/>');
+        // }
+        // echo '<br/>';
+
+        // print_r('all: ' . $all[5][0]);
+        // echo '<br/>';
+        // print_r($picked_ids);
+        }}
+}
 
 ?>
 
@@ -130,7 +152,7 @@ $class_for_error = 'error';
                                             <?php
                             echo '
                                 <div class="'.$class_for_error.'">
-                                    '.$not_all_params_e.';
+                                    '.$not_all_params_e.$no_such_wnp_e.$max_more_than_all_e.'
                                 </div>'
                         ?>
                     <div class="container-fluid">
