@@ -134,10 +134,13 @@ if (((!isset($_POST['wnp-number'])) || (!isset($_POST['wnp-precent'])) || (!isse
         <div class="hero p-3 bg-primary">
             <div class="hero-heading text-center">
                 <h2>WYLOSUJ ŻĄDANĄ LICZBĘ DOKUMENTÓW</h2>
-                <h3>Aplikacja słuzy do losowania wybranej liczby dokumentów potwierdzających poniesione wydatki, które
-                    zostały
-                    dołączone do wniosku o płatnośc złożonego w ramach RPO WSL 2014-2020. Losując dokumenty wybierz ich
-                    liczbę oraz minimalny lub maksymalny procent, rozumiany jako procent w ogólnej liczbie dokumenów.
+                <h3>
+                    <p>Aplikacja słuzy do losowania wybranej liczby dokumentów potwierdzających poniesione wydatki, które
+                        zostały
+                        dołączone do wniosku o płatnośc złożonego w ramach RPO WSL 2014-2020. </p>
+                    <p>Losując dokumenty wybierz ich
+                        liczbę oraz minimalny lub maksymalny procent, rozumiany jako procent w ogólnej liczbie dokumenów.</p>
+
                 </h3>
             </div>
             <div class="desc"></div>
