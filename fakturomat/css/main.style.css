@@ -10,8 +10,9 @@
 }
 
 body {
-  background-color: #444;
-  color: #fff;
+  color: whitesmoke;
+  width: 100vw;
+  height: 100vh;
 }
 
 .nav-wrap h1 {
@@ -26,4 +27,15 @@ body {
 
 #nav-links a:hover {
   text-decoration: none;
+}
+
+label,
+h4 {
+  color: #0b54b4;
+}
+
+.error {
+  display: block;
+  color: #740202;
+  background: #f54343;
 }
