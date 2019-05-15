@@ -310,7 +310,7 @@ if (((!isset($_POST['wnp-number'])) || (!isset($_POST['wnp-precent'])) || (!isse
                                      <td>' . $row['nip'] .  ' </td>
                                      <td>' . $row['data_zawarcia'] .  ' </td>
                                      <td>' . number_format($row['wartosc_brutto'],  2, '.', ' ')  .  ' </td>
-                                     </tr>'
+                                     </tr>';
                         }
                     };
                     ?>
