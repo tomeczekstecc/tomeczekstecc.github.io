@@ -155,7 +155,7 @@ if (((!isset($_POST['wnp-number'])) || (!isset($_POST['wnp-precent'])) || (!isse
                                     ' . $not_all_params_e . $no_such_wnp_e . $max_more_than_all_e . '
                                 </div>'
             ?>
-            <div class="container-fluid">
+            <div class="container-fluid my-4">
                 <div class="form-row params text-center bg-light p-5 m-1">
 
                     <div id="wnp-number-wrapper" class="col-md-6 col-sm-12 input-group">
@@ -201,22 +201,19 @@ if (((!isset($_POST['wnp-number'])) || (!isset($_POST['wnp-precent'])) || (!isse
         <div id="summary" class="card text-primary mx-auto" style="width: 80vw;">
             <div class="card-body">
                 <h5 class="card-title">Podatawowe informacje o wniosku</h5>
-                <table class="table table table-striped">
+                <table id ="info"class="table table table-striped">
                     <tr>
                         <td>Numer wniosku o płatność: </td>
-                        <td colspan="2">Kolumna 2</td>
-
+                        <td>Kolumna 2</td>
                     </tr>
                     <tr>
                         <td>Nazwa beneficjenta:</td>
                         <td>wartość 1b</td>
-                        <td>fdgfdg</td>
                     </tr>
                     <tr>
                         <td>Okres realizacji:</td>
                         <td>wartość 2b</td>
-                        <td>fgddfg</td>
-                    </tr>
+                                            </tr>
                 </table>
                 <p class="card-text text-dark">Some quick example text to build on the card title and make up the bulk
                     of the card's
