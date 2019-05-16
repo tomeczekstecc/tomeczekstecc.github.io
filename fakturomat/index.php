@@ -15,12 +15,15 @@ if (((!isset($_POST['wnp-number'])) || (!isset($_POST['wnp-precent'])) || (!isse
     $wnp_max = $_POST['wnp-max'];
 
     $querry_select_check_for_wnp =
-        "SELECT wnp.id
+    "SELECT wnp.id, wnp.data_zlozenia, wnp.numer_wniosku, wnp.date_from, wnp.date_to, 
     FROM wnp
     WHERE wnp.numer_wniosku = CONCAT('WNP-RPSL.','$wnp_numer')";
 
     $result3 = mysqli_query($conn_lsi, $querry_select_check_for_wnp);
+    $wnp_info= mysqli_fetch_assoc($result3);
+    print_r($wnp_info);
     $row_num = mysqli_num_rows($result3);
+
 
     if ($row_num <> 1) {
         $no_such_wnp_e = 'Nie znaleziono wniosku o takim numerze.';
@@ -35,6 +38,7 @@ if (((!isset($_POST['wnp-number'])) || (!isset($_POST['wnp-precent'])) || (!isse
 
         $result = mysqli_query($conn_lsi, $querry_select_wnp);
         $result2 = mysqli_query($conn_lsi, $querry_select_wnp);
+
         $all = $result->fetch_all();
         $how_many = sizeof($all);
         $wszystkie_id = [];
@@ -204,14 +208,14 @@ if (((!isset($_POST['wnp-number'])) || (!isset($_POST['wnp-precent'])) || (!isse
                 <table id ="info"class="table table table-striped">
                     <tr>
                         <td>Numer wniosku o płatność: </td>
-                        <td>Kolumna 2</td>
+                        <td> <?php echo $wnp_info['numer_wniosku'] ?> </td>
                     </tr>
                     <tr>
                         <td>Nazwa beneficjenta:</td>
                         <td>wartość 1b</td>
                     </tr>
                     <tr>
-                        <td>Okres realizacji:</td>
+                        <td>Okres sprawozdawczy:</td>
                         <td>wartość 2b</td>
                                             </tr>
                 </table>
