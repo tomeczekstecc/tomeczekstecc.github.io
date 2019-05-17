@@ -1,6 +1,7 @@
 <?php
 require_once('php/db_config_LSI.php');
 
+
 $not_all_params_e = '';
 $no_such_wnp_e = '';
 $max_more_than_all_e = '';
@@ -10,89 +11,17 @@ if (((!isset($_POST['wnp-number'])) || (!isset($_POST['wnp-precent'])) || (!isse
     $not_all_params_e = 'Nie wybrano wszystkich parametrów. Wpisz pełny numer wniosku, procent oraz liczbę do wylosowania.';
     $class_for_error = 'error';
 } else {
+
+
     $wnp_numer = $_POST['wnp-number'];
     $wnp_procent = $_POST['wnp-precent'];
     $wnp_max = $_POST['wnp-max'];
 
-    $querry_select_check_for_wnp =
-    "SELECT wnp.id, wnp.data_zlozenia, wnp.numer_wniosku, wnp.date_from, wnp.date_to, 
-    FROM wnp
-    WHERE wnp.numer_wniosku = CONCAT('WNP-RPSL.','$wnp_numer')";
-
-    $result3 = mysqli_query($conn_lsi, $querry_select_check_for_wnp);
-    $wnp_info= mysqli_fetch_assoc($result3);
-    print_r($wnp_info);
-    $row_num = mysqli_num_rows($result3);
 
 
-    if ($row_num <> 1) {
-        $no_such_wnp_e = 'Nie znaleziono wniosku o takim numerze.';
-        $class_for_error = 'error';
-    } else {
-        $querry_select_wnp =
-            "SELECT wnp_documents.id, wnp_documents.nip, wnp_documents.nr_fv, wnp_documents.data_zawarcia, wnp_documents.wartosc_brutto
-            FROM wnp
-            LEFT JOIN wnp_documents ON wnp_documents.wnp_id=wnp.id
-            WHERE wnp.numer_wniosku= CONCAT('WNP-RPSL.','$wnp_numer')
-            ORDER BY 1 ASC";
 
-        $result = mysqli_query($conn_lsi, $querry_select_wnp);
-        $result2 = mysqli_query($conn_lsi, $querry_select_wnp);
+require('php/wnp_info.php');
 
-        $all = $result->fetch_all();
-        $how_many = sizeof($all);
-        $wszystkie_id = [];
-
-        if ($wnp_max > $how_many) {
-            $max_more_than_all_e = 'Liczba dokumentów do wylosowania jest większa, niż liczba dokumenów dołączona do wniosku. Dla tego wniosku możesz wylosować nie więcej, niż ' . $how_many . '.';
-            $class_for_error = 'error';
-        } else {
-
-            foreach ($all as $value) {
-                array_push($wszystkie_id, $value[0]);
-            };
-
-            ///////////////////////// ALGORYTM LOSOWANIA BEZ POWTORZEN ////////////////////Mirossław Zelent//
-            $ile_pytan = $how_many; //z ilu pytan losujemy?
-            $ile_wylosowac =  $wnp_max; //ile pytan wylosowac?
-            $ile_juz_wylosowano = 0; //zmienna pomocnicza
-            for ($i = 1; $i <= $ile_wylosowac; $i++) {
-                do {
-                    $liczba = rand(1, $ile_pytan); //losowanie w PHP
-                    $losowanie_ok = true;
-
-                    for ($j = 1; $j <= $ile_juz_wylosowano; $j++) {
-                        //czy liczba nie zostala juz wczesniej wylosowana?
-                        if ($liczba == $wylosowane[$j]) $losowanie_ok = false;
-                    }
-
-                    if ($losowanie_ok == true) {
-                        //mamy unikatowa liczbe, zapiszmy ja do tablicy
-                        $ile_juz_wylosowano++;
-                        $wylosowane[$ile_juz_wylosowano] = $liczba;
-                    }
-                } while ($losowanie_ok != true);
-            }
-
-
-            // UTWÓRZ TABLICĘ Z WYLOSOWANYMI ID
-            $picked_ids = [];
-
-            foreach ($wylosowane as $value) {
-                array_push($picked_ids, $wszystkie_id[$value]);
-            }
-
-            // // WYPISZ NA EKRANIE
-            // foreach ($picked_ids as $key => $value) {
-            //     echo ($value . '<br/>');
-            // }
-            // echo '<br/>';
-
-            // print_r('all: ' . $all[5][0]);
-            // echo '<br/>';
-            // print_r($picked_ids);
-        }
-    }
 }
 
 ?>
@@ -202,22 +131,25 @@ if (((!isset($_POST['wnp-number'])) || (!isset($_POST['wnp-precent'])) || (!isse
             </div>
         </form>
 
+                    <?php
+                    require('php/wnp_info.php');
+                    ?>
         <div id="summary" class="card text-primary mx-auto" style="width: 80vw;">
             <div class="card-body">
                 <h5 class="card-title">Podatawowe informacje o wniosku</h5>
                 <table id ="info"class="table table table-striped">
                     <tr>
                         <td>Numer wniosku o płatność: </td>
-                        <td> <?php echo $wnp_info['numer_wniosku'] ?> </td>
+                        <td> <?php echo $wnp_info_numer ?> </td>
                     </tr>
                     <tr>
                         <td>Nazwa beneficjenta:</td>
-                        <td>wartość 1b</td>
+                        <td> <?php echo $wnp_info_nazwa ?> </td>
                     </tr>
                     <tr>
                         <td>Okres sprawozdawczy:</td>
-                        <td>wartość 2b</td>
-                                            </tr>
+                        <td><?php echo $wnp_info_okres_spr ?></td>
+                    </tr>
                 </table>
                 <p class="card-text text-dark">Some quick example text to build on the card title and make up the bulk
                     of the card's
@@ -241,6 +173,7 @@ if (((!isset($_POST['wnp-number'])) || (!isset($_POST['wnp-precent'])) || (!isse
                 <tbody>
 
                     <?php
+
                     $j = 0;
                     $suma_all = 0;
                     if (!isset($picked_ids)) {
@@ -333,4 +266,6 @@ if (((!isset($_POST['wnp-number'])) || (!isset($_POST['wnp-precent'])) || (!isse
     <div class="footer bg-dark text-center p-3">
         Zespoł LSI &copy;
     </div>
+    <script src="app.js"></script>
 </body>
+</html>
